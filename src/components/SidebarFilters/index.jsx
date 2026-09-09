@@ -22,6 +22,11 @@ function Filter({
   defaultValue,
   size,
   queryLogic,
+  // Any other key on a FILTERS entry is forwarded verbatim to the underlying
+  // reactivesearch component. The props named above are destructured out, so a
+  // config entry cannot clobber them; `{...rest}` is spread first for the same
+  // reason, leaving this component's own wiring authoritative.
+  ...rest
 }) {
   const _queryLogic = useMemo(
     () =>
@@ -38,6 +43,7 @@ function Filter({
     case "multi":
       return (
         <MultiList
+          {...rest}
           componentId={componentId}
           key={componentId}
           dataField={dataField}
@@ -53,6 +59,7 @@ function Filter({
     case "date":
       return (
         <DateRange
+          {...rest}
           componentId={componentId}
           key={componentId}
           title={title}
@@ -65,6 +72,7 @@ function Filter({
     case "boolean":
       return (
         <SingleList
+          {...rest}
           componentId={componentId}
           key={componentId}
           dataField={dataField}
@@ -86,6 +94,7 @@ function Filter({
     default:
       return (
         <SingleList
+          {...rest}
           componentId={componentId}
           key={componentId}
           dataField={dataField}

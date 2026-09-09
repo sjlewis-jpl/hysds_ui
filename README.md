@@ -63,6 +63,25 @@ exports.QUERY_LOGIC = {
 };
 ```
 
+Besides `componentId`, `dataField`, `title`, `type`, `sortBy`, `defaultValue`, `size` and `queryLogic`, any
+other key on a filter entry is passed straight through to the underlying `reactivesearch` component, so a
+deployment can reach props that `SidebarFilters` does not name itself. For example, `DateRange` defaults to
+`queryFormat: "epoch_millis"` and serializes both ends of the range as the selected day's *local* midnight;
+setting `queryFormat` makes that explicit without patching the component:
+
+```js
+{
+  componentId: "timestamp",
+  dataField: "@timestamp",
+  title: "Timestamp",
+  type: "date",
+  queryFormat: "date", // emit "YYYY-MM-DD" and let elasticsearch round the range to whole UTC days
+}
+```
+
+The named props above are destructured out before the spread, so a config entry cannot accidentally
+override a filter's own `componentId`, `dataField` or wiring.
+
 ## Building and Running application locally
 
 ```bash
